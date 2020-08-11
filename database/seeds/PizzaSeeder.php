@@ -50,15 +50,6 @@ class PizzaSeeder extends Seeder
         ]);
 
         DB::table('pizzas')->insert([
-            'title' => 'BACON DOUBLE CHEESEBURGER',
-            'description' => 'Cheeseburger. Pizza. Enough Said - Yeah, we did it. Crush two comfort-food classics in one, with ground beef, bacon crumble and four-cheese blend. Try it with Honey Mustard dipping sauce for extra burger bite!',
-            'price' => '1069',
-            'picture' => 'picture5.jpg',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
-
-        DB::table('pizzas')->insert([
             'title' => 'SWEET HEAT',
             'description' => 'A fiery bite with a sweet twist - Sometimes opposites attract and make sweet, spicy magic! Trust us, the combo of grilled chicken, pineapple, hot banana peppers and mozzarella cheese is totally amazing.',
             'price' => '1132',
