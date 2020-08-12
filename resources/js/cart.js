@@ -1,11 +1,6 @@
 
 $(document).ready(function() {
-
-    /* Set rates + misc */
-    var taxRate = 0.05;
-    var shippingRate = 15.00;
-    var fadeTime = 300;
-
+    let fadeTime = 300;
 
     /* Assign actions */
     $('.product-quantity input').change( function() {
@@ -67,16 +62,35 @@ $(document).ready(function() {
         });
     }
 
+    function recalculateTotalSum()
+    {
+        let grandTotalPriceElem = $('span.grand_total');
+
+        let itemsTotalPrice = +$('span.total_price').html();
+        let deliveryPrice = +$('span.delivery_price').html();
+
+        grandTotalPriceElem.html(itemsTotalPrice + deliveryPrice);
+    }
+
 
     /* Remove item from cart */
     function removeItem(removeButton)
     {
         /* Remove row from DOM and recalc cart total */
-        var productRow = $(removeButton).parent().parent();
-        productRow.slideUp(fadeTime, function() {
-            productRow.remove();
-            recalculateCart();
-        });
+        let productRow = $(removeButton).parent().parent();
+        let pizzaId = removeButton.dataset.pizzaId;
+        $(removeButton).html('<i class="fas fa-spinner"></i>');
+        $.ajax('/cart/remove/' + pizzaId)
+            .done((data) => {
+                if (data.success && data.total_price) {
+                    $('span.total_price').html(data.total_price);
+                    $(removeButton).html('Remove');
+                    productRow.slideUp(fadeTime, function() {
+                        productRow.remove();
+                        recalculateTotalSum();
+                    });
+                }
+            });
     }
 
 });

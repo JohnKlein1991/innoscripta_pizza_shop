@@ -37327,9 +37327,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  /* Set rates + misc */
-  var taxRate = 0.05;
-  var shippingRate = 15.00;
   var fadeTime = 300;
   /* Assign actions */
 
@@ -37389,15 +37386,30 @@ $(document).ready(function () {
       });
     });
   }
+
+  function recalculateTotalSum() {
+    var grandTotalPriceElem = $('span.grand_total');
+    var itemsTotalPrice = +$('span.total_price').html();
+    var deliveryPrice = +$('span.delivery_price').html();
+    grandTotalPriceElem.html(itemsTotalPrice + deliveryPrice);
+  }
   /* Remove item from cart */
 
 
   function removeItem(removeButton) {
     /* Remove row from DOM and recalc cart total */
     var productRow = $(removeButton).parent().parent();
-    productRow.slideUp(fadeTime, function () {
-      productRow.remove();
-      recalculateCart();
+    var pizzaId = removeButton.dataset.pizzaId;
+    $(removeButton).html('<i class="fas fa-spinner"></i>');
+    $.ajax('/cart/remove/' + pizzaId).done(function (data) {
+      if (data.success && data.total_price) {
+        $('span.total_price').html(data.total_price);
+        $(removeButton).html('Remove');
+        productRow.slideUp(fadeTime, function () {
+          productRow.remove();
+          recalculateTotalSum();
+        });
+      }
     });
   }
 });

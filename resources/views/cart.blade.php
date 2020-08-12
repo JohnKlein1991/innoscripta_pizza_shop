@@ -27,12 +27,12 @@
                 <div class="product-title">{{ $pizza->title }}</div>
                 <p class="product-description">{{ $pizza->description }}</p>
             </div>
-            <div class="product-price">{{ sprintf("%.2f", $pizza->price/100) }} $</div>
+            <div class="product-price">{{ sprintf("%.2f", $pizza->price/100) }}</div>
             <div class="product-quantity">
                 <input type="number" value="{{ $cart_data[$pizza->id] }}" min="1">
             </div>
             <div class="product-removal">
-                <button class="remove-product">
+                <button class="remove-product" data-pizza-id="{{ $pizza->id }}">
                     Remove
                 </button>
             </div>
@@ -43,15 +43,15 @@
     <div class="totals">
         <div class="totals-item">
             <label>Subtotal</label>
-            <div class="totals-value" id="cart-subtotal">{{ $cart_total_price }}</div>
+            <div class="totals-value" id="cart-subtotal"><span class="total_price">{{ $cart_total_price }}</span></div>
         </div>
         <div class="totals-item">
             <label>Shipping</label>
-            <div class="totals-value" id="cart-shipping">{{ $delivery_price }} $</div>
+            <div class="totals-value" id="cart-shipping"><span class="delivery_price">{{ $delivery_price }}</span></div>
         </div>
         <div class="totals-item totals-item-total">
             <label>Grand Total</label>
-            <div class="totals-value" id="cart-total">{{ $cart_total_price + $delivery_price }}</div>
+            <div class="totals-value" id="cart-total"><span class="grand_total">{{ $cart_total_price + $delivery_price }}</span></div>
         </div>
     </div>
 
