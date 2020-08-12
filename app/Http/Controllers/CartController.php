@@ -15,6 +15,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CartController extends Controller
 {
     /**
+     * Delivery price in dollars
+     */
+    private const DELIVERY_PRICE = 500;
+    /**
      * @var CartService
      */
     private CartService $cartService;
@@ -56,9 +60,10 @@ class CartController extends Controller
 
         return view('cart', [
             'pizzas' => $pizzas,
-            'totalQuantity' => $totalQuantity,
-            'totalPrice' => $totalPrice,
-            'cartData' => $cartData
+            'total_quantity' => $totalQuantity,
+            'cart_total_price' => $totalPrice,
+            'delivery_price' => sprintf("%.2f", self::DELIVERY_PRICE/100),
+            'cart_data' => $cartData
         ]);
     }
 

@@ -53,7 +53,7 @@ class MainController extends Controller
         return view('main', [
             'pizzas' => $pizzas,
             'cartItemsQuantity' => $cartItemsQuantity,
-            'cartTotalPrice' => $cartTotalPrice
+            'cart_total_price' => $cartTotalPrice
         ]);
     }
 }

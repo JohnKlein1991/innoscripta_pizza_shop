@@ -37266,19 +37266,11 @@ module.exports = function(module) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-$(document).on('click', '.add_to_cart', function (e) {
-  var currentButton = $(e.currentTarget);
-  var pizzaCard = $(e.currentTarget).parents('div.pizza-card');
-  var pizzaId = pizzaCard.data('pizzaId');
-  currentButton.html('<i class="fas fa-spinner"></i>');
-  $.ajax('/cart/add/' + pizzaId).done(function (data) {
-    if (data.success && data.total_price) {
-      $('span.total_price').html(data.total_price);
-    }
+__webpack_require__(/*! ./main */ "./resources/js/main.js");
 
-    currentButton.html('Add to cart');
-  });
-});
+__webpack_require__(/*! ./cart */ "./resources/js/cart.js");
+
+__webpack_require__(/*! ./order */ "./resources/js/order.js");
 
 /***/ }),
 
@@ -37324,6 +37316,125 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/cart.js":
+/*!******************************!*\
+  !*** ./resources/js/cart.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /* Set rates + misc */
+  var taxRate = 0.05;
+  var shippingRate = 15.00;
+  var fadeTime = 300;
+  /* Assign actions */
+
+  $('.product-quantity input').change(function () {
+    updateQuantity(this);
+  });
+  $('.product-removal button').click(function () {
+    removeItem(this);
+  });
+  /* Recalculate cart */
+
+  function recalculateCart() {
+    var subtotal = 0;
+    /* Sum up row totals */
+
+    $('.product').each(function () {
+      subtotal += parseFloat($(this).children('.product-line-price').text());
+    });
+    /* Calculate totals */
+
+    var tax = subtotal * taxRate;
+    var shipping = subtotal > 0 ? shippingRate : 0;
+    var total = subtotal + tax + shipping;
+    /* Update totals display */
+
+    $('.totals-value').fadeOut(fadeTime, function () {
+      $('#cart-subtotal').html(subtotal.toFixed(2));
+      $('#cart-tax').html(tax.toFixed(2));
+      $('#cart-shipping').html(shipping.toFixed(2));
+      $('#cart-total').html(total.toFixed(2));
+
+      if (total == 0) {
+        $('.checkout').fadeOut(fadeTime);
+      } else {
+        $('.checkout').fadeIn(fadeTime);
+      }
+
+      $('.totals-value').fadeIn(fadeTime);
+    });
+  }
+  /* Update quantity */
+
+
+  function updateQuantity(quantityInput) {
+    /* Calculate line price */
+    var productRow = $(quantityInput).parent().parent();
+    var price = parseFloat(productRow.children('.product-price').text());
+    var quantity = $(quantityInput).val();
+    var linePrice = price * quantity;
+    /* Update line price display and recalc cart totals */
+
+    productRow.children('.product-line-price').each(function () {
+      $(this).fadeOut(fadeTime, function () {
+        $(this).text(linePrice.toFixed(2));
+        recalculateCart();
+        $(this).fadeIn(fadeTime);
+      });
+    });
+  }
+  /* Remove item from cart */
+
+
+  function removeItem(removeButton) {
+    /* Remove row from DOM and recalc cart total */
+    var productRow = $(removeButton).parent().parent();
+    productRow.slideUp(fadeTime, function () {
+      productRow.remove();
+      recalculateCart();
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/main.js":
+/*!******************************!*\
+  !*** ./resources/js/main.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).on('click', '.add_to_cart', function (e) {
+  var currentButton = $(e.currentTarget);
+  var pizzaCard = $(e.currentTarget).parents('div.pizza-card');
+  var pizzaId = pizzaCard.data('pizzaId');
+  currentButton.html('<i class="fas fa-spinner"></i>');
+  $.ajax('/cart/add/' + pizzaId).done(function (data) {
+    if (data.success && data.total_price) {
+      $('span.total_price').html(data.total_price);
+    }
+
+    currentButton.html('Add to cart');
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/order.js":
+/*!*******************************!*\
+  !*** ./resources/js/order.js ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
 
 /***/ }),
 

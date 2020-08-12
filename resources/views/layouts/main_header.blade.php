@@ -47,7 +47,7 @@
                 <li class="nav-item">
                     <a href="{{route('cart.main')}}" class="btn btn-success ml-2" type="button"
                     ><i class="fas fa-shopping-cart"></i>
-                        <span><span class="total_price">{{$cartTotalPrice}}</span>$</span>
+                        <span><span class="total_price">{{$cart_total_price}}</span>$</span>
                     </a>
                 </li>
             </ul>
