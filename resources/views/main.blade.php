@@ -23,7 +23,8 @@
                 <div class="card-body">
                     <img class="img-thumbnail" src="{{ asset('storage/images/pizzas/'.$pizza->picture) }}" alt="">
                     <p>{{ $pizza->description }}</p>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Add to cart </button>
+                    <p>{{ sprintf("%.2f", $pizza->price/100) }} $</p>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Add to cart</button>
                 </div>
             </div>
         @if($numberItemInRow === 3)
