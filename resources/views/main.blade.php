@@ -20,7 +20,7 @@
         @php
             $numberItemInRow++;
         @endphp
-            <div class="card mb-4 box-shadow">
+            <div class="pizza-card card mb-4 box-shadow" data-pizza-id="{{ $pizza->id }}">
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ $pizza->title }}</h4>
                 </div>
@@ -28,7 +28,9 @@
                     <img class="img-thumbnail" src="{{ asset('storage/images/pizzas/'.$pizza->picture) }}" alt="">
                     <p>{{ $pizza->description }}</p>
                     <p>{{ sprintf("%.2f", $pizza->price/100) }} $</p>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Add to cart</button>
+                    <button type="button" class="add_to_cart btn btn-lg btn-block btn-primary">
+                        Add to cart
+                    </button>
                 </div>
             </div>
         @if($numberItemInRow === 3)

@@ -37266,6 +37266,20 @@ module.exports = function(module) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+$(document).on('click', '.add_to_cart', function (e) {
+  var currentButton = $(e.currentTarget);
+  var pizzaCard = $(e.currentTarget).parents('div.pizza-card');
+  var pizzaId = pizzaCard.data('pizzaId');
+  currentButton.html('<i class="fas fa-spinner"></i>');
+  $.ajax('/cart/add/' + pizzaId).done(function (data) {
+    if (data.success && data.total_price) {
+      $('span.total_price').html(data.total_price);
+    }
+
+    currentButton.html('Add to cart');
+  });
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

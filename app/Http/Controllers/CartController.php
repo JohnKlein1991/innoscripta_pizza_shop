@@ -74,8 +74,12 @@ class CartController extends Controller
         }
         $this->cartService->add($pizza);
 
+        $cartData = $this->cartService->getData();
+        $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+
         return response()->json([
-            'success' => true
+            'success' => true,
+            'total_price' => $totalPrice
         ]);
     }
 

@@ -47,11 +47,7 @@
                 <li class="nav-item">
                     <a href="{{route('cart.main')}}" class="btn btn-success ml-2" type="button"
                     ><i class="fas fa-shopping-cart"></i>
-                        @if($cartTotalPrice !== 0)
-                            <span><span class="total_price">{{$cartTotalPrice}}</span>$</span>
-                        @else
-                            <span style="display: none"><span class="total_price"></span>$</span>
-                        @endif
+                        <span><span class="total_price">{{$cartTotalPrice}}</span>$</span>
                     </a>
                 </li>
             </ul>
