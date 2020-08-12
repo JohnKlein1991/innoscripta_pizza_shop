@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pizza;
 use App\Services\CartService;
 use App\Services\PizzaService;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -78,6 +79,38 @@ class CartController extends Controller
             throw new NotFoundHttpException('A pizza with this ID does not exist');
         }
         $this->cartService->add($pizza);
+
+        $cartData = $this->cartService->getData();
+        $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+
+        return response()->json([
+            'success' => true,
+            'total_price' => $totalPrice
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $pizzaId
+     * @return int[]|mixed
+     */
+    public function setQuantity(Request $request, int $pizzaId)
+    {
+        $pizza = Pizza::find($pizzaId);
+        $quantity = $request->get('quantity', null);
+
+        if (is_null($pizza)) {
+            throw new NotFoundHttpException('A pizza with this ID does not exist');
+        }
+        if (is_null($quantity)) {
+            throw new HttpException(400, 'Parameter \'quantity\' is required');
+        }
+
+        if ((int) $quantity < 0) {
+            throw new HttpException(400, 'Incorrect value for quantity');
+        }
+
+        $this->cartService->setQuantity($pizza, $quantity);
 
         $cartData = $this->cartService->getData();
         $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);

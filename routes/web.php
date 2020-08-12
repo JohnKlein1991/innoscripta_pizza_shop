@@ -22,6 +22,7 @@ Route::name('cart.')
         Route::name('add')->get('add/{id}', 'CartController@add');
         Route::name('remove_item')->get('remove/{id}', 'CartController@removeItem');
         Route::name('decrease_item')->get('decrease/{id}', 'CartController@decreaseItemQuantity');
+        Route::name('set_quantity')->post('set-quantity/{id}', 'CartController@setQuantity');
     });
 
 Auth::routes();

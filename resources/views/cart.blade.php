@@ -29,7 +29,7 @@
             </div>
             <div class="product-price">{{ sprintf("%.2f", $pizza->price/100) }}</div>
             <div class="product-quantity">
-                <input type="number" value="{{ $cart_data[$pizza->id] }}" min="1">
+                <input type="number" data-pizza-id="{{ $pizza->id }}" value="{{ $cart_data[$pizza->id] }}" min="1">
             </div>
             <div class="product-removal">
                 <button class="remove-product" data-pizza-id="{{ $pizza->id }}">

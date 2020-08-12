@@ -36,6 +36,19 @@ class CartService
     }
 
     /**
+     * Set quantity for this pizza
+     * @param Pizza $pizza
+     * @param int $quantity
+     */
+    public function setQuantity(Pizza $pizza, int $quantity)
+    {
+        $cartData = session(self::SESSION_NAME);
+        $cartData[$pizza->id] = $quantity;
+
+        session([self::SESSION_NAME => $cartData]);
+    }
+
+    /**
      * Return all cart data
      * @return mixed
      */

@@ -47,19 +47,35 @@ $(document).ready(function() {
     function updateQuantity(quantityInput)
     {
         /* Calculate line price */
+        let pizzaId = quantityInput.dataset.pizzaId;
+        let quantity = $(quantityInput).val();
         var productRow = $(quantityInput).parent().parent();
         var price = parseFloat(productRow.children('.product-price').text());
-        var quantity = $(quantityInput).val();
         var linePrice = price * quantity;
 
-        /* Update line price display and recalc cart totals */
-        productRow.children('.product-line-price').each(function () {
-            $(this).fadeOut(fadeTime, function() {
-                $(this).text(linePrice.toFixed(2));
-                recalculateCart();
-                $(this).fadeIn(fadeTime);
+        $.ajax({
+            url: '/cart/set-quantity/' + pizzaId,
+            method: 'POST',
+            data: {
+                quantity: quantity
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+            .done((data) => {
+                if (data.success && data.total_price) {
+                    $('span.total_price').html(data.total_price);
+                    recalculateTotalSum();
+                    /* Update line price display and recalc cart totals */
+                    productRow.children('.product-line-price').each(function () {
+                        $(this).fadeOut(fadeTime, function() {
+                            $(this).text(linePrice.toFixed(2));
+                            $(this).fadeIn(fadeTime);
+                        });
+                    });
+                }
             });
-        });
     }
 
     function recalculateTotalSum()
@@ -84,10 +100,10 @@ $(document).ready(function() {
             .done((data) => {
                 if (data.success && data.total_price) {
                     $('span.total_price').html(data.total_price);
+                    recalculateTotalSum();
                     $(removeButton).html('Remove');
                     productRow.slideUp(fadeTime, function() {
                         productRow.remove();
-                        recalculateTotalSum();
                     });
                 }
             });
