@@ -47,7 +47,7 @@ class CartController extends Controller
                 throw new HttpException(422);
             }
             $totalQuantity = $this->cartService->getTotalQuantity();
-            $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity();
+            $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
         } else {
             $pizzas = [];
             $totalQuantity = 0;

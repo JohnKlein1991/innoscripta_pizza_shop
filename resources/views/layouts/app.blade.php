@@ -15,19 +15,19 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <script src="https://kit.fontawesome.com/4b1f7f658a.js" crossorigin="anonymous"></script>
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        @yield('header', View::make('layouts.main_header'))
+        @yield('header')
 
         <main class="py-4">
             @yield('content')
         </main>
 
-        @yield('footer', View::make('layouts.main_footer'))
+        @yield('footer')
     </div>
 </body>
 </html>
