@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * Class User
  * @package App\Models
+ * @property int $id
  */
 class User extends Authenticatable
 {

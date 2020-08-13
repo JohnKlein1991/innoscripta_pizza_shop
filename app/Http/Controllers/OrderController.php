@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateOrderRequest;
+use App\Models\Order;
 use App\Services\CartService;
 use App\Services\OrderService;
 use App\Services\PizzaService;
@@ -43,6 +44,8 @@ class OrderController extends Controller
 
     public function index()
     {
+        $user = Auth::user();
+        $orders = $this->orderService->getByUser($user);
         $cartData = $this->cartService->getData();
 
         if (!is_null($cartData)) {
@@ -54,6 +57,7 @@ class OrderController extends Controller
 
         return view('orders', [
             'cart_total_price' => $totalPrice,
+            'orders' => $orders
         ]);
     }
 

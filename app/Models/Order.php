@@ -36,6 +36,6 @@ class Order extends Model
      */
     public function pizzas()
     {
-        return $this->belongsToMany(Pizza::class, 'pizza_to_order')->wherePivot('quantity');
+        return $this->belongsToMany(Pizza::class, 'pizza_to_order')->withPivot('quantity');
     }
 }
