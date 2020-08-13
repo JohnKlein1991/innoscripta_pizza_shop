@@ -29,5 +29,8 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'finhub' => [
+        'key' => env('FINHUB_TOKEN'),
+        'url' => 'https://finnhub.io/api/v1/forex/rates?base=USD&token=%s'
+    ]
 ];

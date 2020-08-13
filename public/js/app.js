@@ -37389,12 +37389,22 @@ $(document).ready(function () {
     }).done(function (data) {
       if (data.success && data.total_price) {
         $('span.total_price').html(data.total_price);
-        recalculateTotalSum();
+
+        if (data.euro_rate) {
+          $('span.total-price-in-euro').html((data.total_price * data.euro_rate).toFixed(2));
+        }
+
+        recalculateTotalSum(data.euro_rate);
         /* Update line price display and recalc cart totals */
 
         productRow.children('.product-line-price').each(function () {
           $(this).fadeOut(fadeTime, function () {
-            $(this).text(linePrice.toFixed(2));
+            $(this).find('span.price-in-usd').text(linePrice.toFixed(2));
+
+            if (data.euro_rate) {
+              $(this).find('span.price-in-euro').text((linePrice * data.euro_rate).toFixed(2));
+            }
+
             $(this).fadeIn(fadeTime);
           });
         });
@@ -37402,11 +37412,13 @@ $(document).ready(function () {
     });
   }
 
-  function recalculateTotalSum() {
+  function recalculateTotalSum(euroRate) {
     var grandTotalPriceElem = $('span.grand_total');
+    var grandTotalEuroPriceElem = $('span.grand-total-price-in-euro');
     var itemsTotalPrice = +$('span.total_price').html();
     var deliveryPrice = +$('span.delivery_price').html();
     grandTotalPriceElem.html(itemsTotalPrice + deliveryPrice);
+    grandTotalEuroPriceElem.html(((itemsTotalPrice + deliveryPrice) * euroRate).toFixed(2));
   }
   /* Remove item from cart */
 
@@ -37419,7 +37431,12 @@ $(document).ready(function () {
     $.ajax('/cart/remove/' + pizzaId).done(function (data) {
       if (data.success && data.total_price) {
         $('span.total_price').html(data.total_price);
-        recalculateTotalSum();
+
+        if (data.euro_rate) {
+          $('span.total-price-in-euro').html((data.total_price * data.euro_rate).toFixed(2));
+        }
+
+        recalculateTotalSum(data.euro_rate);
         $(removeButton).html('Remove');
         productRow.slideUp(fadeTime, function () {
           productRow.remove();

@@ -66,11 +66,17 @@ $(document).ready(function() {
             .done((data) => {
                 if (data.success && data.total_price) {
                     $('span.total_price').html(data.total_price);
-                    recalculateTotalSum();
+                    if (data.euro_rate) {
+                        $('span.total-price-in-euro').html((data.total_price * data.euro_rate).toFixed(2));
+                    }
+                    recalculateTotalSum(data.euro_rate);
                     /* Update line price display and recalc cart totals */
                     productRow.children('.product-line-price').each(function () {
                         $(this).fadeOut(fadeTime, function() {
-                            $(this).text(linePrice.toFixed(2));
+                            $(this).find('span.price-in-usd').text(linePrice.toFixed(2));
+                            if (data.euro_rate) {
+                                $(this).find('span.price-in-euro').text((linePrice * data.euro_rate).toFixed(2));
+                            }
                             $(this).fadeIn(fadeTime);
                         });
                     });
@@ -78,14 +84,16 @@ $(document).ready(function() {
             });
     }
 
-    function recalculateTotalSum()
+    function recalculateTotalSum(euroRate)
     {
         let grandTotalPriceElem = $('span.grand_total');
+        let grandTotalEuroPriceElem = $('span.grand-total-price-in-euro');
 
         let itemsTotalPrice = +$('span.total_price').html();
         let deliveryPrice = +$('span.delivery_price').html();
 
         grandTotalPriceElem.html(itemsTotalPrice + deliveryPrice);
+        grandTotalEuroPriceElem.html(((itemsTotalPrice + deliveryPrice) * euroRate).toFixed(2));
     }
 
 
@@ -100,7 +108,10 @@ $(document).ready(function() {
             .done((data) => {
                 if (data.success && data.total_price) {
                     $('span.total_price').html(data.total_price);
-                    recalculateTotalSum();
+                    if (data.euro_rate) {
+                        $('span.total-price-in-euro').html((data.total_price * data.euro_rate).toFixed(2));
+                    }
+                    recalculateTotalSum(data.euro_rate);
                     $(removeButton).html('Remove');
                     productRow.slideUp(fadeTime, function() {
                         productRow.remove();

@@ -1,4 +1,18 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);/* Global settings */
+span.price-in-euro:before,
+span.total-price-in-euro:before,
+span.grand-total-price-in-euro:before
+{
+    content: '(\20AC';
+}
+
+span.price-in-euro:after,
+span.total-price-in-euro:after,
+span.grand-total-price-in-euro:after
+{
+    content: ')';
+}
+
 
 .product-image {
     float: left;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pizza;
 use App\Services\CartService;
+use App\Services\Currency\CurrencyService;
 use App\Services\PizzaService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -23,16 +24,22 @@ class CartController extends Controller
      * @var PizzaService
      */
     private PizzaService $pizzaService;
+    /**
+     * @var CurrencyService
+     */
+    private CurrencyService $currencyService;
 
     /**
      * CartController constructor.
      * @param CartService $cartService
      * @param PizzaService $pizzaService
+     * @param CurrencyService $currencyService
      */
-    public function __construct(CartService $cartService, PizzaService $pizzaService)
+    public function __construct(CartService $cartService, PizzaService $pizzaService, CurrencyService $currencyService)
     {
         $this->cartService = $cartService;
         $this->pizzaService = $pizzaService;
+        $this->currencyService = $currencyService;
     }
 
     /**
@@ -56,12 +63,15 @@ class CartController extends Controller
             $totalPrice = 0;
         }
 
+        $euroRate = $this->currencyService->getEuroRate();
+
         return view('cart', [
             'pizzas' => $pizzas,
             'total_quantity' => $totalQuantity,
             'cart_total_price' => $totalPrice,
             'delivery_price' => sprintf("%.2f", CartService::DELIVERY_PRICE/100),
-            'cart_data' => $cartData
+            'cart_data' => $cartData,
+            'euro_rate' => $euroRate
         ]);
     }
 
@@ -113,10 +123,12 @@ class CartController extends Controller
         $cartData = $this->cartService->getData();
         $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
         $totalPrice = sprintf("%.2f", $totalPrice/100);
+        $euroRate = $this->currencyService->getEuroRate();
 
         return response()->json([
             'success' => true,
-            'total_price' => $totalPrice
+            'total_price' => $totalPrice,
+            'euro_rate' => $euroRate,
         ]);
     }
 
@@ -150,9 +162,12 @@ class CartController extends Controller
         $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
         $totalPrice = sprintf("%.2f", $totalPrice/100);
 
+        $euroRate = $this->currencyService->getEuroRate();
+
         return response()->json([
             'success' => true,
-            'total_price' => $totalPrice
+            'total_price' => $totalPrice,
+            'euro_rate' => $euroRate
         ]);
     }
 }

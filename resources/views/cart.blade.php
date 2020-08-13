@@ -27,7 +27,7 @@
                 <div class="product-title">{{ $pizza->title }}</div>
                 <p class="product-description">{{ $pizza->description }}</p>
             </div>
-            <div class="product-price">{{ sprintf("%.2f", $pizza->price/100) }}</div>
+            <div class="product-price">{{ sprintf("%.2f", $pizza->price/100) }} (€{{sprintf("%.2f", $pizza->price * $euro_rate/100)}})</div>
             <div class="product-quantity">
                 <input type="number" data-pizza-id="{{ $pizza->id }}" value="{{ $cart_data[$pizza->id] }}" min="1">
             </div>
@@ -36,22 +36,38 @@
                     Remove
                 </button>
             </div>
-            <div class="product-line-price">{{ sprintf("%.2f", $pizza->price * $cart_data[$pizza->id]/100) }} $</div>
+            <div class="product-line-price">
+                <span class="price-in-usd">
+                    {{ sprintf("%.2f", $pizza->price * $cart_data[$pizza->id]/100) }}
+                </span>
+                <span class="price-in-euro">
+                    {{sprintf("%.2f", $pizza->price * $cart_data[$pizza->id] * $euro_rate/100)}}
+                </span>
+            </div>
         </div>
     @endforeach
 
     <div class="totals">
         <div class="totals-item">
             <label>Subtotal</label>
-            <div class="totals-value" id="cart-subtotal"><span class="total_price">{{ $cart_total_price }}</span></div>
+            <div class="totals-value" id="cart-subtotal">
+                <span class="total_price">{{ $cart_total_price }}</span>
+                <span class="total-price-in-euro">{{sprintf("%.2f", $cart_total_price * $euro_rate)}}</span>
+            </div>
         </div>
         <div class="totals-item">
             <label>Shipping</label>
-            <div class="totals-value" id="cart-shipping"><span class="delivery_price">{{ $delivery_price }}</span></div>
+            <div class="totals-value" id="cart-shipping">
+                <span class="delivery_price">{{ $delivery_price }}</span>
+                <span class="price-in-euro">{{sprintf("%.2f", $delivery_price * $euro_rate)}}</span>
+            </div>
         </div>
         <div class="totals-item totals-item-total">
             <label>Grand Total</label>
-            <div class="totals-value" id="cart-total"><span class="grand_total">{{ $cart_total_price + $delivery_price }}</span></div>
+            <div class="totals-value" id="cart-total">
+                <span class="grand_total">{{ $cart_total_price + $delivery_price }}</span>
+                <span class="grand-total-price-in-euro">{{sprintf("%.2f", ($cart_total_price + $delivery_price) * $euro_rate)}}</span>
+            </div>
         </div>
     </div>
 
