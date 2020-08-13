@@ -11,6 +11,10 @@ use App\Models\Pizza;
 class CartService
 {
     /**
+     * Delivery price in dollars
+     */
+    public const DELIVERY_PRICE = 500;
+    /**
      * Session key for cart
      */
     private const SESSION_NAME = 'pizza_cart';
@@ -97,6 +101,16 @@ class CartService
         }
 
         session([self::SESSION_NAME => $cartData]);
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function clearCart()
+    {
+        session([self::SESSION_NAME => null]);
 
         return true;
     }

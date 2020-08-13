@@ -31,6 +31,8 @@ services:
       build: phpdocker/php-fpm
       container_name: innoscripta-pizza_shop-php-fpm
       working_dir: /application
+      environment:
+        PHP_IDE_CONFIG: "serverName=Docker"
       volumes:
         - .:/application
         - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini

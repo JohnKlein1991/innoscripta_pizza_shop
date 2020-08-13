@@ -25,4 +25,10 @@ Route::name('cart.')
         Route::name('set_quantity')->post('set-quantity/{id}', 'CartController@setQuantity');
     });
 
+Route::name('order.')
+    ->prefix('order')
+    ->group(function() {
+        Route::name('create')->post('/create', 'OrderController@create');
+    });
+
 Auth::routes();

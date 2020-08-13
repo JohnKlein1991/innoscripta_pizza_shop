@@ -45,6 +45,7 @@ class MainController extends Controller
         if (!is_null($cartData)) {
             $cartItemsQuantity = $this->cartService->getTotalQuantity();
             $cartTotalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+            $cartTotalPrice = sprintf("%.2f", $cartTotalPrice/100);
         } else {
             $cartItemsQuantity = 0;
             $cartTotalPrice = 0;

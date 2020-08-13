@@ -39,6 +39,6 @@ class PizzaService
             $totalPrice += $pizzaPrice * $quantity;
         }
 
-        return sprintf("%.2f", $totalPrice/100);
+        return $totalPrice;
     }
 }

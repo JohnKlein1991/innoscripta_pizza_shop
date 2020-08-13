@@ -55,7 +55,37 @@
         </div>
     </div>
 
-    <button class="checkout">Checkout</button>
-
+    <form method="POST" action="/order/create">
+        @csrf
+        <div class="form-group row">
+            <label for="inputFirstName" class="col-sm-2 col-form-label">First name</label>
+            <div class="col-sm-10">
+                <input required name="first_name" type="text" class="form-control" id="inputFirstName" placeholder="First name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputLastName" class="col-sm-2 col-form-label">Last name</label>
+            <div class="col-sm-10">
+                <input required name="last_name" type="text" class="form-control" id="inputLastName" placeholder="Last name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPhone" class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+                <input required name="phone" type="text" class="form-control" id="inputPhone" placeholder="+1234567">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputAddress" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <input required name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Checkout</button>
+            </div>
+        </div>
+    </form>
 </div>
 @endsection

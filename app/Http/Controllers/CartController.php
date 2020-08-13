@@ -16,10 +16,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CartController extends Controller
 {
     /**
-     * Delivery price in dollars
-     */
-    private const DELIVERY_PRICE = 500;
-    /**
      * @var CartService
      */
     private CartService $cartService;
@@ -53,6 +49,7 @@ class CartController extends Controller
             }
             $totalQuantity = $this->cartService->getTotalQuantity();
             $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+            $totalPrice = sprintf("%.2f", $totalPrice/100);
         } else {
             $pizzas = [];
             $totalQuantity = 0;
@@ -63,7 +60,7 @@ class CartController extends Controller
             'pizzas' => $pizzas,
             'total_quantity' => $totalQuantity,
             'cart_total_price' => $totalPrice,
-            'delivery_price' => sprintf("%.2f", self::DELIVERY_PRICE/100),
+            'delivery_price' => sprintf("%.2f", CartService::DELIVERY_PRICE/100),
             'cart_data' => $cartData
         ]);
     }
@@ -82,6 +79,7 @@ class CartController extends Controller
 
         $cartData = $this->cartService->getData();
         $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+        $totalPrice = sprintf("%.2f", $totalPrice/100);
 
         return response()->json([
             'success' => true,
@@ -114,6 +112,7 @@ class CartController extends Controller
 
         $cartData = $this->cartService->getData();
         $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+        $totalPrice = sprintf("%.2f", $totalPrice/100);
 
         return response()->json([
             'success' => true,
@@ -149,6 +148,7 @@ class CartController extends Controller
 
         $cartData = $this->cartService->getData();
         $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+        $totalPrice = sprintf("%.2f", $totalPrice/100);
 
         return response()->json([
             'success' => true,
