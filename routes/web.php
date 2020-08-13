@@ -29,6 +29,7 @@ Route::name('order.')
     ->prefix('order')
     ->group(function() {
         Route::name('create')->post('/create', 'OrderController@create');
+        Route::name('history')->get('/', 'OrderController@index')->middleware('auth');
     });
 
 Auth::routes();

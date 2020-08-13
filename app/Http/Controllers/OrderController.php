@@ -9,6 +9,10 @@ use App\Services\PizzaService;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+/**
+ * Class OrderController
+ * @package App\Http\Controllers
+ */
 class OrderController extends Controller
 {
     /**
@@ -37,6 +41,26 @@ class OrderController extends Controller
         $this->pizzaService = $pizzaService;
     }
 
+    public function index()
+    {
+        $cartData = $this->cartService->getData();
+
+        if (!is_null($cartData)) {
+            $totalPrice = $this->pizzaService->getTotalPriceByIdsAndQuantity($cartData);
+            $totalPrice = sprintf("%.2f", $totalPrice/100);
+        } else {
+            $totalPrice = 0;
+        }
+
+        return view('orders', [
+            'cart_total_price' => $totalPrice,
+        ]);
+    }
+
+    /**
+     * @param CreateOrderRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function create(CreateOrderRequest $request)
     {
         $request->validated();
@@ -58,4 +82,6 @@ class OrderController extends Controller
 
         return redirect()->route('main');
     }
+
+
 }

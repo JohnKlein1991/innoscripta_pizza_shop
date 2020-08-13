@@ -9,8 +9,19 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class OrderService
+ * @package App\Services
+ */
 class OrderService
 {
+    /**
+     * @param User|null $user
+     * @param array|null $cartData
+     * @param CreateOrderRequest $request
+     * @param int $itemsPrice
+     * @return bool
+     */
     public function create(?User $user, ?array $cartData, CreateOrderRequest $request, int $itemsPrice)
     {
         try {
